@@ -6,6 +6,7 @@ function App() {
   const [numberAllowed, setNumberAllowed] = useState(false);
   const [charAllowed, setCharAllowed] = useState(false)
   const [password, setPassword] = useState("")
+  const [buttonColor, setButtonColor] = useState("#1d4ed8")
 
   //useRef hook
   const passwordRef = useRef<HTMLInputElement>(null)
@@ -31,17 +32,23 @@ function App() {
     passwordRef.current?.select();
     passwordRef.current?.setSelectionRange(0, 999);
     window.navigator.clipboard.writeText(password)
+    // Lighten the button color when clicked
+    setButtonColor("#3b82f6") // lighter blue-500
+    // Revert back after 300ms
+    setTimeout(() => {
+      setButtonColor("#1d4ed8") // back to blue-700
+    }, 300)
   }, [password])
 
   useEffect(() => {
     passwordGenerator()
   }, [length, numberAllowed, charAllowed, passwordGenerator])
   return (
-    <div className='overflow-hidden w-full h-screen flex items-center justify-center bg-[url(../public/image.jpg)]' >
+    <div className='overflow-hidden w-full h-screen flex items-center justify-center bg-gray-900' >
 
-      <div className="w-full max-w-md shadow-md rounded-lg px-4 py-3 bg-white text-orange-500">
-        <h1 className='text-black font-bold  text-center my-3'>Password generator</h1>
-        <div className="flex shadow rounded-lg overflow-hidden mb-4">
+      <div className="w-full h-70 max-w-md rounded-lg px-4 py-3 bg-black border-2 border-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.6)] text-orange-500">
+        <h1 className='text-cyan-400 text-3xl font-bold text-center my-3 py-2'>Password generator</h1>
+        <div className="flex shadow rounded-lg overflow-hidden mb-4 mt-10 ">
           <input
             type="text"
             value={password}
@@ -52,11 +59,12 @@ function App() {
           />
           <button
             onClick={copyPasswordToClipboard}
-            className='outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0'
+            className='outline-none text-white px-3 py-0.5 shrink-0 transition-colors duration-200'
+            style={{ backgroundColor: buttonColor }}
           >copy</button>
 
         </div>
-        <div className='flex text-sm gap-x-2'>
+        <div className='flex text-sm gap-x-2 mt-8'>
           <div className='flex items-center gap-x-1'>
             <input
               type="range"
